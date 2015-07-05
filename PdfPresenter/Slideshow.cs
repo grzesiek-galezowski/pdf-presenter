@@ -5,14 +5,19 @@ using PdfiumViewer;
 
 namespace PdfPresenter
 {
-  public class Slideshow
+  public interface SlideshowObserver
+  {
+    void NotifySlideChangedTo(int page);
+  }
+
+  public class Slideshow : SlideshowObserver
   {
     private readonly int _slideOffset;
     private readonly PdfRenderer _pdfRenderer;
     private WindowsFormsHost _windowsFormsHost;
     private readonly string _path;
-    private readonly List<Slideshow> _observers = new List<Slideshow>();
     private int _currentPage;
+    private SlideshowObserver _slideshowObserver;
 
     public Slideshow(string path, int slideOffset = 0)
     {
@@ -20,6 +25,12 @@ namespace PdfPresenter
       _slideOffset = slideOffset;
       _currentPage = slideOffset;
       _pdfRenderer = new PdfRenderer();
+      _slideshowObserver = new BroadcastingSlideshowObserver();
+    }
+
+    public void ReportSlideChangesTo(SlideshowObserver slideshow)
+    {
+      _slideshowObserver = slideshow;
     }
 
     public void Load()
@@ -64,18 +75,10 @@ namespace PdfPresenter
       _pdfRenderer.Page++;
       _currentPage = _pdfRenderer.Page;
       _pdfRenderer.Refresh();
-      NotifyAllObserversOnSlide(_pdfRenderer.Page);
+      _slideshowObserver.NotifySlideChangedTo(_pdfRenderer.Page);
     }
 
-    private void NotifyAllObserversOnSlide(int page)
-    {
-      foreach (var slideshow in _observers)
-      {
-        slideshow.NotifySlideChangedTo(page);
-      }
-    }
-
-    private void NotifySlideChangedTo(int page)
+    public void NotifySlideChangedTo(int page)
     {
       _pdfRenderer.Page = page + _slideOffset;
       _currentPage = _pdfRenderer.Page;
@@ -86,12 +89,7 @@ namespace PdfPresenter
       _pdfRenderer.Page--;
       _currentPage = _pdfRenderer.Page;
       _pdfRenderer.Refresh();
-      NotifyAllObserversOnSlide(_pdfRenderer.Page);
-    }
-
-    public void ReportSlideChangesTo(Slideshow slideshow)
-    {
-      _observers.Add(slideshow);
+      _slideshowObserver.NotifySlideChangedTo(_pdfRenderer.Page);
     }
 
     public void Refresh()

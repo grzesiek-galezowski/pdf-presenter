@@ -8,13 +8,15 @@ namespace PdfPresenter
   /// </summary>
   public partial class HelperWindow : Window
   {
-    private readonly Slideshow _currentSlide;
-    private readonly Slideshow _nextSlide;
+    private readonly Slideshow _currentSlide; //TODO remove
+    private readonly Slideshow _nextSlide;  //TODO remove
+    private readonly Slideshow[] _slideshows;
 
     public HelperWindow(Slideshow currentSlide, Slideshow nextSlide)
     {
       _currentSlide = currentSlide;
       _nextSlide = nextSlide;
+      _slideshows = new[] {currentSlide, nextSlide};
 
       InitializeComponent();
       this.Background = new SolidColorBrush(Colors.Black);
@@ -22,8 +24,10 @@ namespace PdfPresenter
 
     private void HelperWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      _currentSlide.Load();
-      _nextSlide.Load();
+      foreach (var slideshow in _slideshows)
+      {
+        slideshow.Load();
+      }
 
       HelpCurrentSlide.Children.Add(_currentSlide.ToWindowsFormsHost());
       HelpNextSlide.Children.Add(_nextSlide.ToWindowsFormsHost());
@@ -31,8 +35,10 @@ namespace PdfPresenter
 
     private void HelperWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
-      _currentSlide.Refresh();
-      _nextSlide.Refresh();
+      foreach (var slideshow in _slideshows)
+      {
+        slideshow.Refresh();
+      }
     }
   }
 }

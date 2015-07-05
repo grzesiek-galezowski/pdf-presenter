@@ -75,6 +75,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BroadcastingSlideshowObserver.cs" />
     <Compile Include="HelperWindow.xaml.cs">
       <DependentUpon>HelperWindow.xaml</DependentUpon>
     </Compile>
