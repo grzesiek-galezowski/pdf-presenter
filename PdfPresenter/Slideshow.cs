@@ -5,11 +5,6 @@ using PdfiumViewer;
 
 namespace PdfPresenter
 {
-  public interface SlideshowObserver
-  {
-    void NotifySlideChangedTo(int page);
-  }
-
   public class Slideshow : SlideshowObserver
   {
     private readonly int _slideOffset;
@@ -25,7 +20,7 @@ namespace PdfPresenter
       _slideOffset = slideOffset;
       _currentPage = slideOffset;
       _pdfRenderer = new PdfRenderer();
-      _slideshowObserver = new BroadcastingSlideshowObserver();
+      _slideshowObserver = NoObservers();
     }
 
     public void ReportSlideChangesTo(SlideshowObserver slideshow)
@@ -97,5 +92,11 @@ namespace PdfPresenter
       _pdfRenderer.Page = _currentPage;
       _pdfRenderer.Refresh();
     }
+
+    private static BroadcastingSlideshowObserver NoObservers()
+    {
+      return new BroadcastingSlideshowObserver();
+    }
+
   }
 }
