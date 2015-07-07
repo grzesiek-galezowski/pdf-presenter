@@ -1,16 +1,28 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PdfPresenter
 {
+  public interface PresentationDurationObserver
+  {
+    void NotifyOnTimePassed(TimeSpan time);
+  }
+
   /// <summary>
   /// Interaction logic for HelperWindow.xaml
   /// </summary>
-  public partial class HelperWindow : Window
+  public partial class HelperWindow : Window, PresentationDurationObserver
   {
     private readonly Slideshow _currentSlide; //TODO remove
     private readonly Slideshow _nextSlide;  //TODO remove
     private readonly Slideshow[] _slideshows;
+    private readonly PresentationTime _presentationTime;
 
     public HelperWindow(Slideshow currentSlide, Slideshow nextSlide)
     {
@@ -19,26 +31,50 @@ namespace PdfPresenter
       _slideshows = new[] {currentSlide, nextSlide};
 
       InitializeComponent();
-      this.Background = new SolidColorBrush(Colors.Black);
+      _presentationTime = new PresentationTime(this);
+    }
+
+    public void NotifyOnTimePassed(TimeSpan time)
+    {
+      TimeSinceStart.Text = time.ToString("c").Substring(0, 8);
     }
 
     private void HelperWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      foreach (var slideshow in _slideshows)
+      try
       {
-        slideshow.Load();
-      }
+        foreach (var slideshow in _slideshows)
+        {
+          slideshow.Load();
+        }
 
-      HelpCurrentSlide.Children.Add(_currentSlide.ToWindowsFormsHost());
-      HelpNextSlide.Children.Add(_nextSlide.ToWindowsFormsHost());
+        HelpCurrentSlide.Children.Add(_currentSlide.ToWindowsFormsHost());
+        HelpNextSlide.Children.Add(_nextSlide.ToWindowsFormsHost());
+        _presentationTime.StartMeasuring();
+
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("Error in OnLoaded: " + ex.ToString());
+        throw;
+      }
     }
 
     private void HelperWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
-      foreach (var slideshow in _slideshows)
+      try
       {
-        slideshow.Refresh();
+        foreach (var slideshow in _slideshows)
+        {
+          slideshow.Refresh();
+        }
       }
+      catch (Exception ex)
+      {
+        MessageBox.Show("Error in OnSizeChanged: " + ex.ToString());
+        throw;
+      }
+
     }
   }
 }

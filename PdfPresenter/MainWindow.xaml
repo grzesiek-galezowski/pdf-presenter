@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:PdfPresenter"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
+        Background="Black"
+        WindowState = "Maximized"
+        WindowStyle = "None"
+
         Loaded="MainWindow_OnLoaded">
     <Grid Name="MainGrid">
             <Image Name="MainSlide" Stretch="Fill"></Image>

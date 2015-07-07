@@ -6,14 +6,23 @@
         Loaded="HelperWindow_OnLoaded"
         SizeChanged="HelperWindow_OnSizeChanged"
         mc:Ignorable="d"
-        Title="HelperWindow" Height="300" Width="300">
-        <Grid Name="HelperGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Name="HelpCurrentSlide" Grid.Row="0"></Grid>
-            <Grid Name="HelpNextSlide" Grid.Row="1"></Grid>
-        </Grid>
-    
+        Title="HelperWindow" Height="300" Width="300"
+        Background="Black"
+        MinWidth="20cm"
+        MinHeight="10cm">
+  <Grid Name="HelperGrid">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="6*"></RowDefinition>
+      <RowDefinition Height="5*"></RowDefinition>
+      <RowDefinition Height="2*"></RowDefinition>
+    </Grid.RowDefinitions>
+    <Grid Name="HelpCurrentSlide" Grid.Row="0"></Grid>
+    <Grid Name="HelpNextSlide" Grid.Row="1"></Grid>
+    <Grid Grid.Row="2" ColumnSpan="2">
+      <Viewbox>
+        <TextBlock Name="TimeSinceStart" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Viewbox>
+    </Grid>
+  </Grid>
+
 </Window>

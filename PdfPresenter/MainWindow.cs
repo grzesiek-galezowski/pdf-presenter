@@ -16,9 +16,6 @@ namespace PdfPresenter
     {
       _slideshow = mainSlideshow;
       InitializeComponent();
-      this.Background = new SolidColorBrush(Colors.Black);
-      WindowState = WindowState.Maximized;
-      WindowStyle = WindowStyle.None;
     }
 
 
