@@ -20,13 +20,13 @@ namespace PdfPresenter
         var nextSlide = new Slideshow(path, 1);
         var mainSlideshow = new Slideshow(path);
 
-        mainSlideshow.ReportSlideChangesTo(new BroadcastingSlideshowObserver(currentSlide, nextSlide));
 
 
         var helper = new HelperWindow(
           currentSlide, 
           nextSlide
         );
+        mainSlideshow.ReportSlideChangesTo(new BroadcastingSlideshowObserver(currentSlide, nextSlide));
 
         var mainWindow = new MainWindow(mainSlideshow);
         mainWindow.Show();

@@ -14,6 +14,10 @@ namespace PdfPresenter
     private readonly string _path;
     private int _currentPage;
     private SlideshowObserver _slideshowObserver;
+    private int _totalPages = -1;
+
+    public int CurrentPage { get { return _currentPage; } }
+    public int TotalPages { get { return _totalPages; } }
 
     public Slideshow(string path, int slideOffset = 0)
     {
@@ -31,7 +35,9 @@ namespace PdfPresenter
 
     public void Load()
     {
-      _pdfRenderer.Load(PdfDocument.Load(_path));
+      var pdfDocument = PdfDocument.Load(_path);
+      _totalPages = pdfDocument.PageCount;
+      _pdfRenderer.Load(pdfDocument);
 
       _windowsFormsHost = new WindowsFormsHost
       {

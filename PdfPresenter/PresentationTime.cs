@@ -24,7 +24,7 @@ namespace PdfPresenter
         while (true)
         {
           _progress.Report(_stopwatch.Elapsed);
-          Thread.Sleep(1000);
+          Thread.Sleep(100);
         }
       });
     }

@@ -36,7 +36,9 @@ namespace PdfPresenter
 
     public void NotifyOnTimePassed(TimeSpan time)
     {
+      var realCurrentPage = _currentSlide.CurrentPage + 1;
       TimeSinceStart.Text = time.ToString("c").Substring(0, 8);
+      SlideProgression.Text = realCurrentPage + " / " + _currentSlide.TotalPages;
     }
 
     private void HelperWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -76,5 +78,6 @@ namespace PdfPresenter
       }
 
     }
+
   }
 }

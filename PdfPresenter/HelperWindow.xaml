@@ -11,16 +11,25 @@
         MinWidth="20cm"
         MinHeight="10cm">
   <Grid Name="HelperGrid">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition></ColumnDefinition>
+      <ColumnDefinition></ColumnDefinition>
+    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="6*"></RowDefinition>
       <RowDefinition Height="5*"></RowDefinition>
       <RowDefinition Height="2*"></RowDefinition>
     </Grid.RowDefinitions>
-    <Grid Name="HelpCurrentSlide" Grid.Row="0"></Grid>
-    <Grid Name="HelpNextSlide" Grid.Row="1"></Grid>
-    <Grid Grid.Row="2" ColumnSpan="2">
+    <Grid Name="HelpCurrentSlide" Grid.Row="0" ColumnSpan="2"></Grid>
+    <Grid Name="HelpNextSlide" Grid.Row="1" ColumnSpan="2"></Grid>
+    <Grid Grid.Row="2" Column="0">
       <Viewbox>
         <TextBlock Name="TimeSinceStart" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Viewbox>
+    </Grid>
+    <Grid Grid.Row="2" Column="1">
+    <Viewbox>
+        <TextBlock Name="SlideProgression" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Viewbox>
     </Grid>
   </Grid>

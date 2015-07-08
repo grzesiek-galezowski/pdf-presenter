@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Forms.Integration;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace PdfPresenter
@@ -35,5 +37,22 @@ namespace PdfPresenter
       this.Focus();
       _pdfControl.Focus();
     }
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+      base.OnSourceInitialized(e);
+      HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+      source.AddHook(WndProc);
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+      // Handle messages...
+      //MessageBox.Show(msg.ToString());
+
+      //bug handle messages from presenter
+      return IntPtr.Zero;
+    }
+
   }
 }
