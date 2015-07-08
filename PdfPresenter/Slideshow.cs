@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Input;
 using PdfiumViewer;
 
 namespace PdfPresenter
@@ -54,17 +55,7 @@ namespace PdfPresenter
 
     public void OnKeyUpGoToNextSlide()
     {
-      _pdfRenderer.KeyUp += (o, args) =>
-      {
-        if (args.KeyCode == Keys.Down)
-        {
-          Advance();
-        }
-        else if (args.KeyCode == Keys.Up)
-        {
-          GoBack();
-        }
-      };
+
     }
 
     public WindowsFormsHost ToWindowsFormsHost()
@@ -72,7 +63,7 @@ namespace PdfPresenter
       return _windowsFormsHost;
     }
 
-    private void Advance()
+    public void Advance()
     {
       _pdfRenderer.Page++;
       _currentPage = _pdfRenderer.Page;
@@ -86,7 +77,7 @@ namespace PdfPresenter
       _currentPage = _pdfRenderer.Page;
     }
 
-    private void GoBack()
+    public void GoBackOneSlide()
     {
       _pdfRenderer.Page--;
       _currentPage = _pdfRenderer.Page;

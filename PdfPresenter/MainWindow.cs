@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
@@ -30,7 +31,6 @@ namespace PdfPresenter
       _pdfControl = _slideshow.ToWindowsFormsHost();
 
       MainGrid.Children.Add(_pdfControl);
-
     }
 
     public void FocusOnPdf()
@@ -39,29 +39,37 @@ namespace PdfPresenter
       _pdfControl.Focus();
     }
 
-    private void PreviousTrackCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+
+    private void MainWindow_OnKeyUp(object sender, KeyEventArgs e)
     {
-      MessageBox.Show("Previous track");
+      if (e.Key == Key.Down)
+      {
+        _slideshow.Advance();
+      }
+      else if (e.Key == Key.Up)
+      {
+        _slideshow.GoBackOneSlide();
+      }
     }
 
-    private void NextTrackCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
     {
-      MessageBox.Show("Next track");
-    }
-
-    private void TogglePlayPauseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-      MessageBox.Show("Play-Pause");
-    }
-
-    private void DecreaseVolumeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-      MessageBox.Show("Volume down");
-    }
-
-    private void IncreaseVolumeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-      MessageBox.Show("Volume up");
+      if (e.Key == Key.OemPeriod)
+      {
+        //TODO
+      }
+      else if (e.Key == Key.Next)
+      {
+        _slideshow.Advance();
+      }
+      else if (e.Key == Key.PageUp)
+      {
+        _slideshow.GoBackOneSlide();
+      }
+      else if (e.Key == Key.F5)
+      {
+        //ignore - no need to handle this for now
+      }
     }
   }
 }

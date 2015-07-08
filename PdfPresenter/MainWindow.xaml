@@ -10,21 +10,12 @@
         WindowState = "Maximized"
         WindowStyle = "None"
 
-        Loaded="MainWindow_OnLoaded">
-  <Window.CommandBindings>
-    <CommandBinding Command="MediaCommands.PreviousTrack"
-                    Executed="PreviousTrackCommandBinding_Executed"/>
-    <CommandBinding Command="MediaCommands.NextTrack"
-                    Executed="NextTrackCommandBinding_Executed"/>
-    <CommandBinding Command="MediaCommands.TogglePlayPause"
-                    Executed="TogglePlayPauseCommandBinding_Executed"/>
-    <CommandBinding Command="MediaCommands.DecreaseVolume"
-                    Executed="DecreaseVolumeCommandBinding_Executed"/>
-    <CommandBinding Command="MediaCommands.IncreaseVolume"
-                    Executed="IncreaseVolumeCommandBinding_Executed"/>
-  </Window.CommandBindings>
+        Loaded="MainWindow_OnLoaded"
+        KeyDown="MainWindow_OnKeyDown"
+        KeyUp="MainWindow_OnKeyUp"
+>
   <Grid Name="MainGrid">
-            <Image Name="MainSlide" Stretch="Fill"></Image>
-    </Grid>
+      
+  </Grid>
     
 </Window>
