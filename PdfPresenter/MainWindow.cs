@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Forms.Integration;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -38,21 +39,29 @@ namespace PdfPresenter
       _pdfControl.Focus();
     }
 
-    protected override void OnSourceInitialized(EventArgs e)
+    private void PreviousTrackCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-      base.OnSourceInitialized(e);
-      HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
-      source.AddHook(WndProc);
+      MessageBox.Show("Previous track");
     }
 
-    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    private void NextTrackCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-      // Handle messages...
-      //MessageBox.Show(msg.ToString());
-
-      //bug handle messages from presenter
-      return IntPtr.Zero;
+      MessageBox.Show("Next track");
     }
 
+    private void TogglePlayPauseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+      MessageBox.Show("Play-Pause");
+    }
+
+    private void DecreaseVolumeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+      MessageBox.Show("Volume down");
+    }
+
+    private void IncreaseVolumeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+      MessageBox.Show("Volume up");
+    }
   }
 }

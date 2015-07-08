@@ -11,7 +11,19 @@
         WindowStyle = "None"
 
         Loaded="MainWindow_OnLoaded">
-    <Grid Name="MainGrid">
+  <Window.CommandBindings>
+    <CommandBinding Command="MediaCommands.PreviousTrack"
+                    Executed="PreviousTrackCommandBinding_Executed"/>
+    <CommandBinding Command="MediaCommands.NextTrack"
+                    Executed="NextTrackCommandBinding_Executed"/>
+    <CommandBinding Command="MediaCommands.TogglePlayPause"
+                    Executed="TogglePlayPauseCommandBinding_Executed"/>
+    <CommandBinding Command="MediaCommands.DecreaseVolume"
+                    Executed="DecreaseVolumeCommandBinding_Executed"/>
+    <CommandBinding Command="MediaCommands.IncreaseVolume"
+                    Executed="IncreaseVolumeCommandBinding_Executed"/>
+  </Window.CommandBindings>
+  <Grid Name="MainGrid">
             <Image Name="MainSlide" Stretch="Fill"></Image>
     </Grid>
     
