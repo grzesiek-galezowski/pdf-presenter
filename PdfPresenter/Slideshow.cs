@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using PdfiumViewer;
+using PdfPresenter.Exceptions;
+using PdfPresenter.NonGuiCode;
 
 namespace PdfPresenter
 {
@@ -37,6 +39,10 @@ namespace PdfPresenter
     public void Load()
     {
       var pdfDocument = PdfDocument.Load(_path);
+      if (pdfDocument.PageCount == 0)
+      {
+        throw new PresentationLoadResultedInZeroPageDocumentException(_path);
+      }
       _totalPages = pdfDocument.PageCount;
       _pdfRenderer.Load(pdfDocument);
 

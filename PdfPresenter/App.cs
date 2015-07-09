@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows;
+using PdfPresenter.NonGuiCode;
 
 namespace PdfPresenter
 {
@@ -14,27 +15,9 @@ namespace PdfPresenter
     {
       try
       {
-        string path = ConfigurationManager.AppSettings["path"];
+        new PresentationSelection(RunPresentation).Show();
 
-        var currentSlide = new Slideshow(path, 0);
-        var nextSlide = new Slideshow(path, 1);
-        var mainSlideshow = new Slideshow(path);
-
-
-
-        var helper = new HelperWindow(
-          currentSlide, 
-          nextSlide
-        );
-        mainSlideshow.ReportSlideChangesTo(new BroadcastingSlideshowObserver(currentSlide, nextSlide));
-
-        var mainWindow = new MainWindow(mainSlideshow);
-        mainWindow.Show();
-
-        helper.Owner = mainWindow;
-        helper.Show();
-
-        mainWindow.FocusOnPdf();
+        //string path = ConfigurationManager.AppSettings["path"];
 
       }
       catch (Exception exception)
@@ -44,6 +27,32 @@ namespace PdfPresenter
         //Shutdown(-1);
       }
 
+    }
+
+    private static void RunPresentation(string path)
+    {
+      var currentSlide = new Slideshow(path, 0);
+      var nextSlide = new Slideshow(path, 1);
+      var mainSlideshow = new Slideshow(path);
+
+
+      var helper = new HelperWindow(
+        currentSlide,
+        nextSlide
+        );
+      mainSlideshow.ReportSlideChangesTo(new BroadcastingSlideshowObserver(currentSlide, nextSlide));
+
+      mainSlideshow.Load();
+      currentSlide.Load();
+      nextSlide.Load();
+
+      var mainWindow = new MainWindow(mainSlideshow);
+      mainWindow.Show();
+
+      helper.Owner = mainWindow;
+      helper.Show();
+
+      mainWindow.FocusOnPdf();
     }
 
     protected override void OnExit(ExitEventArgs e)

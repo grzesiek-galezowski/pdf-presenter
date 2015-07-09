@@ -1,4 +1,4 @@
-namespace PdfPresenter
+namespace PdfPresenter.NonGuiCode
 {
   public interface SlideshowObserver
   {

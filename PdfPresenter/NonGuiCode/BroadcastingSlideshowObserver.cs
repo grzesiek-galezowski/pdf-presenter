@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPresenter
+namespace PdfPresenter.NonGuiCode
 {
   public class BroadcastingSlideshowObserver : SlideshowObserver
   {

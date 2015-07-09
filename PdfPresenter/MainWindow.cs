@@ -25,8 +25,6 @@ namespace PdfPresenter
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      // Create the interop host control.
-      _slideshow.Load();
       _slideshow.OnKeyUpGoToNextSlide();
       _pdfControl = _slideshow.ToWindowsFormsHost();
 
@@ -56,9 +54,9 @@ namespace PdfPresenter
     {
       if (e.Key == Key.OemPeriod)
       {
-        //TODO
+        _pdfControl.Visibility = (_pdfControl.Visibility == Visibility.Visible) ? Visibility.Hidden : Visibility.Visible;
       }
-      else if (e.Key == Key.Next)
+      else if (e.Key == Key.PageDown)
       {
         _slideshow.Advance();
       }
@@ -68,7 +66,11 @@ namespace PdfPresenter
       }
       else if (e.Key == Key.F5)
       {
-        //ignore - no need to handle this for now
+        Close();
+      }
+      else if(e.Key == Key.Escape)
+      {
+        Close();
       }
     }
   }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using PdfPresenter.NonGuiCode;
 
 namespace PdfPresenter
 {
@@ -36,20 +37,14 @@ namespace PdfPresenter
 
     public void NotifyOnTimePassed(TimeSpan time)
     {
-      var realCurrentPage = _currentSlide.CurrentPage + 1;
-      TimeSinceStart.Text = time.ToString("c").Substring(0, 8);
-      SlideProgression.Text = realCurrentPage + " / " + _currentSlide.TotalPages;
+      TimeSinceStart.Text = Formatting.OfPresentationDurationText(time);
+      SlideProgression.Text = Formatting.OfSlideProgressionText(_currentSlide);
     }
 
     private void HelperWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
       try
       {
-        foreach (var slideshow in _slideshows)
-        {
-          slideshow.Load();
-        }
-
         HelpCurrentSlide.Children.Add(_currentSlide.ToWindowsFormsHost());
         HelpNextSlide.Children.Add(_nextSlide.ToWindowsFormsHost());
         _presentationTime.StartMeasuring();
@@ -58,7 +53,6 @@ namespace PdfPresenter
       catch (Exception ex)
       {
         MessageBox.Show("Error in OnLoaded: " + ex.ToString());
-        throw;
       }
     }
 
