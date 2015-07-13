@@ -9,14 +9,14 @@ using System.Windows.Media;
 namespace PdfPresenter
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for PresentationView.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class PresentationView : Window
   {
     private WindowsFormsHost _pdfControl;
     private readonly Slideshow _slideshow;
 
-    public MainWindow(Slideshow mainSlideshow)
+    public PresentationView(Slideshow mainSlideshow)
     {
       _slideshow = mainSlideshow;
       InitializeComponent();
@@ -25,7 +25,6 @@ namespace PdfPresenter
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      _slideshow.OnKeyUpGoToNextSlide();
       _pdfControl = _slideshow.ToWindowsFormsHost();
 
       MainGrid.Children.Add(_pdfControl);
@@ -42,11 +41,11 @@ namespace PdfPresenter
     {
       if (e.Key == Key.Down)
       {
-        _slideshow.Advance();
+        _slideshow.NextSlide();
       }
       else if (e.Key == Key.Up)
       {
-        _slideshow.GoBackOneSlide();
+        _slideshow.PreviousSlide();
       }
     }
 
@@ -54,15 +53,15 @@ namespace PdfPresenter
     {
       if (e.Key == Key.OemPeriod)
       {
-        _pdfControl.Visibility = (_pdfControl.Visibility == Visibility.Visible) ? Visibility.Hidden : Visibility.Visible;
+        ToggleVisibilityOf(_pdfControl);
       }
       else if (e.Key == Key.PageDown)
       {
-        _slideshow.Advance();
+        _slideshow.NextSlide();
       }
       else if (e.Key == Key.PageUp)
       {
-        _slideshow.GoBackOneSlide();
+        _slideshow.PreviousSlide();
       }
       else if (e.Key == Key.F5)
       {
@@ -72,6 +71,12 @@ namespace PdfPresenter
       {
         Close();
       }
+    }
+
+    private void ToggleVisibilityOf(UIElement uiElement)
+    {
+      uiElement.Visibility = (uiElement.Visibility == Visibility.Visible) 
+        ? Visibility.Hidden : Visibility.Visible;
     }
   }
 }

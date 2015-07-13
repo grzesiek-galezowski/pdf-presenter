@@ -3,20 +3,20 @@ using System.Linq;
 
 namespace PdfPresenter.NonGuiCode
 {
-  public class BroadcastingSlideshowObserver : SlideshowObserver
+  public class BroadcastingSlideshowObserver : PresentationProgressObserver
   {
-    private readonly List<SlideshowObserver> _observers;
+    private readonly List<PresentationProgressObserver> _observers;
 
-    public BroadcastingSlideshowObserver(params SlideshowObserver[] slideshowObservers)
+    public BroadcastingSlideshowObserver(params PresentationProgressObserver[] slideshowObservers)
     {
       _observers = slideshowObservers.ToList();
     }
 
-    public void NotifySlideChangedTo(int page)
+    public void NotifySlideChangedTo(int page, int totalPages)
     {
       foreach (var slideshow in _observers)
       {
-        slideshow.NotifySlideChangedTo(page);
+        slideshow.NotifySlideChangedTo(page, totalPages);
       }
     }
   }

@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Windows;
 using PdfPresenter.NonGuiCode;
+using PdfPresenter.ViewModels;
 
 namespace PdfPresenter
 {
@@ -15,7 +16,7 @@ namespace PdfPresenter
     {
       try
       {
-        new PresentationSelection(RunPresentation).Show();
+        new PresentationSelectionView(RunPresentation).Show();
 
         //string path = ConfigurationManager.AppSettings["path"];
 
@@ -36,28 +37,34 @@ namespace PdfPresenter
       var mainSlideshow = new Slideshow(path);
 
 
-      var helper = new HelperWindow(
+      var helperViewModel = new HelperViewModel();
+
+      var helper = new HelperView(
         currentSlide,
-        nextSlide
-        );
-      mainSlideshow.ReportSlideChangesTo(new BroadcastingSlideshowObserver(currentSlide, nextSlide));
+        nextSlide, new PresentationTime(helperViewModel))
+      {
+        DataContext = helperViewModel
+      };
+
+      mainSlideshow.ReportSlideChangesTo(All(currentSlide, nextSlide, helperViewModel));
 
       mainSlideshow.Load();
       currentSlide.Load();
       nextSlide.Load();
 
-      var mainWindow = new MainWindow(mainSlideshow);
-      mainWindow.Show();
+      var presentationView = new PresentationView(mainSlideshow);
+      presentationView.Show();
 
-      helper.Owner = mainWindow;
+      helper.Owner = presentationView;
+
       helper.Show();
 
-      mainWindow.FocusOnPdf();
+      presentationView.FocusOnPdf();
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    private static BroadcastingSlideshowObserver All(params PresentationProgressObserver[] observers)
     {
-      base.OnExit(e);
+      return new BroadcastingSlideshowObserver(observers);
     }
   }
 }

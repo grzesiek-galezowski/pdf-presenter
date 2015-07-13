@@ -9,14 +9,14 @@ using PdfPresenter.NonGuiCode;
 
 namespace PdfPresenter
 {
-  public class Slideshow : SlideshowObserver
+  public class Slideshow : PresentationProgressObserver
   {
     private readonly int _slideOffset;
     private readonly PdfRenderer _pdfRenderer;
     private WindowsFormsHost _windowsFormsHost;
     private readonly string _path;
     private int _currentPage;
-    private SlideshowObserver _slideshowObserver;
+    private PresentationProgressObserver _slideshowObserver;
     private int _totalPages = -1;
 
     public int CurrentPage { get { return _currentPage; } }
@@ -31,7 +31,7 @@ namespace PdfPresenter
       _slideshowObserver = NoObservers();
     }
 
-    public void ReportSlideChangesTo(SlideshowObserver slideshow)
+    public void ReportSlideChangesTo(PresentationProgressObserver slideshow)
     {
       _slideshowObserver = slideshow;
     }
@@ -56,12 +56,11 @@ namespace PdfPresenter
 
     private void AsSoonAsWinformsHostLoadsShowSlide(int startingSlide, PdfRenderer pdfRenderer)
     {
-      _windowsFormsHost.Loaded += (sender, args) => pdfRenderer.Page = startingSlide;
-    }
-
-    public void OnKeyUpGoToNextSlide()
-    {
-
+      _windowsFormsHost.Loaded += (sender, args) =>
+      {
+        pdfRenderer.Page = startingSlide;
+        _slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
+      };
     }
 
     public WindowsFormsHost ToWindowsFormsHost()
@@ -69,26 +68,26 @@ namespace PdfPresenter
       return _windowsFormsHost;
     }
 
-    public void Advance()
+    public void NextSlide()
     {
       _pdfRenderer.Page++;
       _currentPage = _pdfRenderer.Page;
       _pdfRenderer.Refresh();
-      _slideshowObserver.NotifySlideChangedTo(_pdfRenderer.Page);
+      _slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
     }
 
-    public void NotifySlideChangedTo(int page)
+    public void NotifySlideChangedTo(int page, int totalPages)
     {
       _pdfRenderer.Page = page + _slideOffset;
       _currentPage = _pdfRenderer.Page;
     }
 
-    public void GoBackOneSlide()
+    public void PreviousSlide()
     {
       _pdfRenderer.Page--;
       _currentPage = _pdfRenderer.Page;
       _pdfRenderer.Refresh();
-      _slideshowObserver.NotifySlideChangedTo(_pdfRenderer.Page);
+      _slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
     }
 
     public void Refresh()

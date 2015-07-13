@@ -73,18 +73,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\HelperViewModel.cs" />
     <Compile Include="NonGuiCode\Formatting.cs" />
     <Compile Include="Exceptions\PresentationLoadResultedInZeroPageDocumentException.cs" />
-    <Compile Include="PresentationSelection.xaml.cs">
-      <DependentUpon>PresentationSelection.xaml</DependentUpon>
+    <Compile Include="NonGuiCode\PresentationDurationObserver.cs" />
+    <Compile Include="PresentationSelectionView.xaml.cs">
+      <DependentUpon>PresentationSelectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="NonGuiCode\PresentationTime.cs" />
-    <Compile Include="NonGuiCode\SlideshowObserver.cs" />
-    <Page Include="HelperWindow.xaml">
+    <Compile Include="NonGuiCode\PresentationProgressObserver.cs" />
+    <Page Include="HelperView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="PresentationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -93,19 +95,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NonGuiCode\BroadcastingSlideshowObserver.cs" />
-    <Compile Include="HelperWindow.cs">
-      <DependentUpon>HelperWindow.xaml</DependentUpon>
+    <Compile Include="HelperView.xaml.cs">
+      <DependentUpon>HelperView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="PresentationView.xaml.cs">
+      <DependentUpon>PresentationView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PresentationSelection.xaml">
+    <Page Include="PresentationSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Slideshow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

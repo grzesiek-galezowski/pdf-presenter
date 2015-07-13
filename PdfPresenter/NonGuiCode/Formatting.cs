@@ -9,9 +9,9 @@ namespace PdfPresenter.NonGuiCode
       return time.ToString("c").Substring(0, 8);
     }
 
-    public static string OfSlideProgressionText(Slideshow currentSlide)
+    public static string OfSlideProgressionText(int currentPage, int totalPages)
     {
-      return currentSlide.CurrentPage + 1 + " / " + currentSlide.TotalPages;
+      return currentPage + 1 + " / " + totalPages;
     }
   }
 }

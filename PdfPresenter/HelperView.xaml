@@ -1,15 +1,17 @@
-﻿<Window x:Class="PdfPresenter.HelperWindow"
+﻿<Window x:Class="PdfPresenter.HelperView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Loaded="HelperWindow_OnLoaded"
+        xmlns:pdfPresenter="clr-namespace:PdfPresenter"
+        xmlns:viewModels="clr-namespace:PdfPresenter.ViewModels"
+        Loaded="HelperWindow_OnLoaded"       
         SizeChanged="HelperWindow_OnSizeChanged"
         mc:Ignorable="d"
-        Title="HelperWindow" Height="300" Width="300"
+        Title="HelperView" Height="300" Width="300"
         Background="Black"
         MinWidth="20cm"
-        MinHeight="10cm">
+        MinHeight="10cm" d:DataContext="{d:DesignInstance viewModels:HelperViewModel}">
   <Grid Name="HelperGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition></ColumnDefinition>
@@ -24,12 +26,12 @@
     <Grid Name="HelpNextSlide" Grid.Row="1" ColumnSpan="2"></Grid>
     <Grid Grid.Row="2" Column="0">
       <Viewbox>
-        <TextBlock Name="TimeSinceStart" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Name="TimeSinceStart" Text="{Binding TimeSinceStartString}" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Viewbox>
     </Grid>
     <Grid Grid.Row="2" Column="1">
     <Viewbox>
-        <TextBlock Name="SlideProgression" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Name="SlideProgression" Text="{Binding SlideProgressText}" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Viewbox>
     </Grid>
   </Grid>
