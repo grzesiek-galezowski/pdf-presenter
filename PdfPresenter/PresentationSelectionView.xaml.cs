@@ -22,7 +22,7 @@ namespace PdfPresenter
     {
       try
       {
-        var text = presentationPath.Text;
+        var text = PresentationPath.Text;
         //bug check whether path exists
         if (new FileInfo(text).Exists)
         {
@@ -55,12 +55,12 @@ namespace PdfPresenter
       {
         case true:
           var file = fileDialog.FileName;
-          presentationPath.Text = file;
-          presentationPath.ToolTip = file;
+          PresentationPath.Text = file;
+          PresentationPath.ToolTip = file;
           break;
         default:
-          presentationPath.Text = null;
-          presentationPath.ToolTip = null;
+          PresentationPath.Text = null;
+          PresentationPath.ToolTip = null;
           break;
       }
     }

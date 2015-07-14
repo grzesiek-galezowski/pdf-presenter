@@ -16,10 +16,11 @@ namespace PdfPresenter
     {
       try
       {
-        new PresentationSelectionView(RunPresentation).Show();
+        var presentationSelectionView = new PresentationSelectionView(RunPresentation);
+        presentationSelectionView.DataContext = new PresentationSelectionViewModel();
+        presentationSelectionView.Show();
 
         //string path = ConfigurationManager.AppSettings["path"];
-
       }
       catch (Exception exception)
       {
