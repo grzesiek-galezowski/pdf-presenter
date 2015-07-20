@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PdfPresenter"
+        xmlns:viewModels="clr-namespace:PdfPresenter.ViewModels"
         mc:Ignorable="d"
         Title="PresentationView"
         Background="Black"
@@ -11,10 +12,29 @@
         WindowStyle = "None"
 
         Loaded="MainWindow_OnLoaded"
-        KeyDown="MainWindow_OnKeyDown"
-        KeyUp="MainWindow_OnKeyUp"
->
-  <Grid Name="MainGrid">
+        d:DataContext="{d:DesignInstance viewModels:PresentationViewModel}">
+
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandHandler"/>
+  </Window.CommandBindings>
+
+  <Window.InputBindings>
+    <KeyBinding Key="OemPeriod" Command="{Binding ToggleVisibility}"></KeyBinding>
+    
+    <KeyBinding Key="PageDown" Command="{Binding NextSlideCommand}"></KeyBinding>
+    <KeyBinding Key="Down" Command="{Binding NextSlideCommand}"></KeyBinding>
+    <KeyBinding Key="Space" Command="{Binding NextSlideCommand}"></KeyBinding>
+    
+    <KeyBinding Key="PageUp" Command="{Binding PreviousSlideCommand}"></KeyBinding>
+    <KeyBinding Key="Up" Command="{Binding PreviousSlideCommand}"></KeyBinding>
+    <KeyBinding Key="Back" Command="{Binding PreviousSlideCommand}"></KeyBinding>
+
+    <KeyBinding Key="Escape" Command="ApplicationCommands.Close"></KeyBinding>
+    <KeyBinding Key="F5" Command="ApplicationCommands.Close"></KeyBinding>
+  </Window.InputBindings>
+
+
+  <Grid Name="MainGrid" Visibility="{Binding PresentationVisibility}">
       
   </Grid>
     

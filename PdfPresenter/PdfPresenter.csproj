@@ -83,6 +83,8 @@
     </Compile>
     <Compile Include="NonGuiCode\PresentationTime.cs" />
     <Compile Include="NonGuiCode\PresentationProgressObserver.cs" />
+    <Compile Include="ViewModels\PresentationViewModel.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
     <Page Include="HelperView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -101,5 +101,9 @@ namespace PdfPresenter
       return new BroadcastingSlideshowObserver();
     }
 
+    public void Focus()
+    {
+      _pdfRenderer.Focus();
+    }
   }
 }

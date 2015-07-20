@@ -54,6 +54,7 @@ namespace PdfPresenter
       nextSlide.Load();
 
       var presentationView = new PresentationView(mainSlideshow);
+      presentationView.DataContext = new PresentationViewModel(mainSlideshow);
       presentationView.Show();
 
       helper.Owner = presentationView;
