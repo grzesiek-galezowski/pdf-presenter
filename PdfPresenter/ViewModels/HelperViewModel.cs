@@ -35,6 +35,11 @@ namespace PdfPresenter.ViewModels
       }
     }
 
+    public string TitleText
+    {
+      get { return "Move this window to second screen and maximize"; }
+    }
+
     public void NotifyOnTimePassed(TimeSpan time)
     {
       TimeSinceStartString = Formatting.OfPresentationDurationText(time);

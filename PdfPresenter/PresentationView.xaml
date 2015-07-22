@@ -33,7 +33,7 @@
     <KeyBinding Key="F5" Command="ApplicationCommands.Close"></KeyBinding>
   </Window.InputBindings>
 
-
+ 
   <Grid Name="MainGrid" Visibility="{Binding PresentationVisibility}">
       
   </Grid>

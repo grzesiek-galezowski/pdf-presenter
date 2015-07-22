@@ -45,7 +45,7 @@ namespace PdfPresenter
       }
       _totalPages = pdfDocument.PageCount;
       _pdfRenderer.Load(pdfDocument);
-
+      
       _windowsFormsHost = new WindowsFormsHost
       {
         Child = _pdfRenderer

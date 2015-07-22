@@ -8,7 +8,7 @@
         Loaded="HelperWindow_OnLoaded"       
         SizeChanged="HelperWindow_OnSizeChanged"
         mc:Ignorable="d"
-        Title="HelperView" Height="300" Width="300"
+        Title="{Binding TitleText}" Height="300" Width="300"
         Background="Black"
         MinWidth="20cm"
         MinHeight="10cm" d:DataContext="{d:DesignInstance viewModels:HelperViewModel}">
