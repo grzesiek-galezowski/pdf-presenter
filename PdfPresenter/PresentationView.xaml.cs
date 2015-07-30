@@ -17,7 +17,6 @@ namespace PdfPresenter
       InitializeComponent();
     }
 
-
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
       MainGrid.Children.Add(_slideshow.ToWindowsFormsHost());

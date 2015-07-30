@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PdfPresenter"
         xmlns:viewModels="clr-namespace:PdfPresenter.ViewModels"
+        xmlns:pdfFileViewControl="clr-namespace:PdfFileViewControl;assembly=PdfFileViewControl"
         mc:Ignorable="d"
         Title="PresentationView"
         Background="Black"
@@ -35,7 +36,6 @@
 
  
   <Grid Name="MainGrid" Visibility="{Binding PresentationVisibility}">
-      
   </Grid>
     
 </Window>
