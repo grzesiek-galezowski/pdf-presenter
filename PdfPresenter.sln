@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfPresenter", "PdfPresenter\PdfPresenter.csproj", "{560B83B6-F45B-4531-B393-A6105E21EC6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfFileViewControl", "PdfFileViewControl\PdfFileViewControl.csproj", "{87E25405-D00A-4652-9F4A-9D59C2537DF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaygroundForNewFeatures", "PlaygroundForNewFeatures\PlaygroundForNewFeatures.csproj", "{D4ED1026-7B9D-4BFC-923B-D9DAB8044780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{87E25405-D00A-4652-9F4A-9D59C2537DF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87E25405-D00A-4652-9F4A-9D59C2537DF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87E25405-D00A-4652-9F4A-9D59C2537DF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4ED1026-7B9D-4BFC-923B-D9DAB8044780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4ED1026-7B9D-4BFC-923B-D9DAB8044780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4ED1026-7B9D-4BFC-923B-D9DAB8044780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4ED1026-7B9D-4BFC-923B-D9DAB8044780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

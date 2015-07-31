@@ -1,0 +1,9 @@
+﻿<Window x:Class="PlaygroundForNewFeatures.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pdfFileViewControl="clr-namespace:PdfFileViewControl;assembly=PdfFileViewControl"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+      <pdfFileViewControl:PdfFileView Page="0" File="C:\Users\ftw637\Google Drive\Raporty i prezentacje\TddKata.pdf"/>
+    </Grid>
+</Window>

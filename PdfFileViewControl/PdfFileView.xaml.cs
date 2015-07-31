@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
+using PdfiumViewer;
 
 namespace PdfFileViewControl
 {
@@ -8,20 +11,29 @@ namespace PdfFileViewControl
   /// </summary>
   public partial class PdfFileView : UserControl
   {
-    private int _initialPage = 0;
+    private readonly int _slideOffset;
+    private readonly PdfRenderer _pdfRenderer;
+    private WindowsFormsHost _windowsFormsHost;
+    private readonly string _path;
+    private int _totalPages = -1;
 
-    public int? InitialPage
+
+    private int _page = 0;
+
+    public int? Page
     {
-      get { return _initialPage; }
-      set { _initialPage = value ?? 0; }
+      get { return _page; }
+      set { _page = value ?? 0; }
     }
+
+    public string File { get; set; }
 
 
     private static void OnInitialPageNumberChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      var pdf = (PdfFileView)d;
-      var value = (int?)e.NewValue;
-      pdf._initialPage = value ?? 1;
+      var pdf = (PdfFileView) d;
+      var value = (int?) e.NewValue;
+      pdf._page = value ?? 1;
     }
 
     public PdfFileView()
@@ -31,9 +43,39 @@ namespace PdfFileViewControl
 
     private void PdfFileView_OnLoaded(object sender, RoutedEventArgs e)
     {
-      MessageBox.Show("Loaded!");
+      var pdfDocument = PdfDocument.Load(File);
+      if (pdfDocument.PageCount == 0)
+      {
+        throw new PresentationLoadResultedInZeroPageDocumentException(_path);
+      }
+      _totalPages = pdfDocument.PageCount;
+      _pdfRenderer.Load(pdfDocument);
+
+      _windowsFormsHost = new WindowsFormsHost
+      {
+        Child = _pdfRenderer
+      };
+
+      AsSoonAsWinformsHostLoadsShowSlide(_slideOffset, _pdfRenderer);
     }
 
-    
+    private void AsSoonAsWinformsHostLoadsShowSlide(int startingSlide, PdfRenderer pdfRenderer)
+    {
+      _windowsFormsHost.Loaded += (sender, args) =>
+      {
+        pdfRenderer.Page = startingSlide;
+        //_slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
+      };
+    }
+  }
+
+  //bug replace this with real exception
+  internal class PresentationLoadResultedInZeroPageDocumentException : Exception
+  {
+    public PresentationLoadResultedInZeroPageDocumentException(string path)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
+
