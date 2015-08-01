@@ -92,7 +92,5 @@ namespace PdfFileViewControl
       _pdfRenderer.Page = _cachedPageForErrorWorkaround;
     }
   }
-
-  //bug remove the original exception
 }
 

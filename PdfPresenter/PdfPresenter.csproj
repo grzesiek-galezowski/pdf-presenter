@@ -76,7 +76,6 @@
     <Compile Include="ViewModels\PresentationSelectionViewModel.cs" />
     <Compile Include="ViewModels\HelperViewModel.cs" />
     <Compile Include="NonGuiCode\Formatting.cs" />
-    <Compile Include="Exceptions\PresentationLoadResultedInZeroPageDocumentException.cs" />
     <Compile Include="NonGuiCode\PresentationDurationObserver.cs" />
     <Compile Include="PresentationSelectionView.xaml.cs">
       <DependentUpon>PresentationSelectionView.xaml</DependentUpon>
@@ -152,6 +151,9 @@
     <Content Include="x86\pdfium.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
