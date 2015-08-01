@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
+using System.Windows.Media;
 using PdfiumViewer;
 
 namespace PdfFileViewControl
@@ -75,9 +76,22 @@ namespace PdfFileViewControl
     private static void OnPageNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
       var view = (PdfFileView) dependencyObject;
-      var newValue = (int)dependencyPropertyChangedEventArgs.NewValue;
-      view._pdfRenderer.Page = newValue;
-      view._cachedPageForErrorWorkaround = newValue;
+      var pageIndex = (int)dependencyPropertyChangedEventArgs.NewValue;
+      view._pdfRenderer.Page = pageIndex;
+      view._cachedPageForErrorWorkaround = pageIndex;
+
+      view.HideIfAfterLastSlide(pageIndex);
+    }
+
+    /// <summary>
+    /// This is for helper slideshows that can be one slide ahead the normal slideshow.
+    /// For such slideshows, going one index beyond page range is allowed.
+    /// If this happens, we want to hide such slideshow.
+    /// </summary>
+    /// <param name="pageIndex"></param>
+    private void HideIfAfterLastSlide(int pageIndex)
+    {
+      Visibility = pageIndex >= TotalPages ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)

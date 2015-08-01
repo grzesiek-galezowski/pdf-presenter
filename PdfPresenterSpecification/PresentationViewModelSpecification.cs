@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
+using PdfPresenter.NonGuiCode;
 using PdfPresenter.ViewModels;
+using TddEbook.TddToolkit;
 
 namespace PdfPresenterSpecification
 {
@@ -16,7 +18,7 @@ namespace PdfPresenterSpecification
     public void ShouldNotifyOnSlideChange()
     {
       //GIVEN
-      var viewModel = new PresentationViewModel("aaa", 0)
+      var viewModel = new PresentationViewModel(Any.String(), 0, Any.Instance<PresentationProgressObserver>())
       {
         TotalSlides = 100
       };

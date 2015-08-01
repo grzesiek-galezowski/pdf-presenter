@@ -12,6 +12,7 @@ namespace PdfPresenter.ViewModels
     private readonly PresentationProgressObserver _progressObserver;
     private Visibility _presentationVisibility;
     private int _currentSlide = 0;
+    private int _totalSlides;
 
     public PresentationViewModel(
       string path, 
@@ -72,7 +73,15 @@ namespace PdfPresenter.ViewModels
       }
     }
 
-    public int TotalSlides { get; set; }
+    public int TotalSlides
+    {
+      get { return _totalSlides; }
+      set
+      {
+        _totalSlides = value;
+        _progressObserver.NotifySlideChangedTo(CurrentSlide, TotalSlides);
+      }
+    }
 
     private void GoToPreviousSlide()
     {
@@ -84,10 +93,15 @@ namespace PdfPresenter.ViewModels
 
     private void GoToNextSlide()
     {
-      if (CurrentSlide < TotalSlides)
+      if (CurrentSlide < LastSlide)
       {
         CurrentSlide++;
       }
+    }
+
+    private int LastSlide
+    {
+      get { return TotalSlides - 1; }
     }
 
     [NotifyPropertyChangedInvocator]
