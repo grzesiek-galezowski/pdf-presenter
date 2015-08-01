@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:pdfPresenter="clr-namespace:PdfPresenter"
         xmlns:viewModels="clr-namespace:PdfPresenter.ViewModels"
+        xmlns:pdfFileViewControl="clr-namespace:PdfFileViewControl;assembly=PdfFileViewControl"
         Loaded="HelperWindow_OnLoaded"       
-        SizeChanged="HelperWindow_OnSizeChanged"
         mc:Ignorable="d"
         Title="{Binding TitleText}" Height="300" Width="300"
         Background="Black"
@@ -22,18 +21,24 @@
       <RowDefinition Height="5*"></RowDefinition>
       <RowDefinition Height="2*"></RowDefinition>
     </Grid.RowDefinitions>
-    <Grid Name="HelpCurrentSlide" Grid.Row="0" ColumnSpan="2"></Grid>
-    <Grid Name="HelpNextSlide" Grid.Row="1" ColumnSpan="2"></Grid>
+    <Grid Name="HelpCurrentSlide" Grid.Row="0" ColumnSpan="2">
+      <pdfFileViewControl:PdfFileView Name="CurrentSlideView" Page="{Binding CurrentSlide}" File="{Binding File}" />
+    </Grid>
+
+    <Grid Name="HelpNextSlide" Grid.Row="1" ColumnSpan="2">
+      <pdfFileViewControl:PdfFileView Name="NextSlideView" Page="{Binding NextSlide}" File="{Binding File}" />
+    </Grid>
     <Grid Grid.Row="2" Column="0">
       <Viewbox>
         <TextBlock Name="TimeSinceStart" Text="{Binding TimeSinceStartString}" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Viewbox>
     </Grid>
     <Grid Grid.Row="2" Column="1">
-    <Viewbox>
+      <Viewbox>
         <TextBlock Name="SlideProgression" Text="{Binding SlideProgressText}" Background="Black" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Viewbox>
     </Grid>
   </Grid>
+
 
 </Window>

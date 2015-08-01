@@ -1,24 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using PdfPresenter.Annotations;
+using PdfPresenter.NonGuiCode;
 
 namespace PdfPresenter.ViewModels
 {
   public class PresentationViewModel : INotifyPropertyChanged
   {
-    private readonly Slideshow _mainSlideshow;
+    private readonly PresentationProgressObserver _progressObserver;
     private Visibility _presentationVisibility;
+    private int _currentSlide = 0;
 
-    public PresentationViewModel(Slideshow mainSlideshow)
+    public PresentationViewModel(
+      string path, 
+      int initialSlide, 
+      PresentationProgressObserver progressObserver)
     {
-      _mainSlideshow = mainSlideshow;
+      _progressObserver = progressObserver;
+      File = path;
+      CurrentSlide = initialSlide;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -57,34 +59,45 @@ namespace PdfPresenter.ViewModels
       get { return new RelayCommand(_ => GoToPreviousSlide()); }
     }
 
-    public ICommand ExitCommand
+    public string File { get; private set; }
+
+    public int CurrentSlide
     {
-      get
+      get { return _currentSlide; }
+      set
       {
-        return new RelayCommand(_ => Exit());
+        _currentSlide = value;
+        OnPropertyChanged();
+        _progressObserver.NotifySlideChangedTo(_currentSlide, TotalSlides);
       }
     }
 
-    private void Exit()
-    {
-      throw new NotImplementedException();
-    }
+    public int TotalSlides { get; set; }
 
     private void GoToPreviousSlide()
     {
-      _mainSlideshow.PreviousSlide();
+      if (CurrentSlide > 0)
+      {
+        CurrentSlide--;
+      }
     }
 
     private void GoToNextSlide()
     {
-      _mainSlideshow.NextSlide();
+      if (CurrentSlide < TotalSlides)
+      {
+        CurrentSlide++;
+      }
     }
 
     [NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
       var handler = PropertyChanged;
-      if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+      if (handler != null)
+      {
+        handler(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
   }
 }

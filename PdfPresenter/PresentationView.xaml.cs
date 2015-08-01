@@ -9,28 +9,21 @@ namespace PdfPresenter
   /// </summary>
   public partial class PresentationView : Window
   {
-    private readonly Slideshow _slideshow;
-
-    public PresentationView(Slideshow mainSlideshow)
+    public PresentationView()
     {
-      _slideshow = mainSlideshow;
       InitializeComponent();
-    }
-
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-    {
-      MainGrid.Children.Add(_slideshow.ToWindowsFormsHost());
     }
 
     public void FocusOnPdf()
     {
       this.Focus();
-      _slideshow.Focus();
+      FileView.Focus();
     }
 
     private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
     {
       Close();
     }
+
   }
 }

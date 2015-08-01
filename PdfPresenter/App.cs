@@ -19,8 +19,6 @@ namespace PdfPresenter
         var presentationSelectionView = new PresentationSelectionView(RunPresentation);
         presentationSelectionView.DataContext = new PresentationSelectionViewModel();
         presentationSelectionView.Show();
-
-        //string path = ConfigurationManager.AppSettings["path"];
       }
       catch (Exception exception)
       {
@@ -33,40 +31,26 @@ namespace PdfPresenter
 
     private static void RunPresentation(string path)
     {
-      var currentSlide = new Slideshow(path, 0);
-      var nextSlide = new Slideshow(path, 1);
-      var mainSlideshow = new Slideshow(path);
-
-
-      var helperViewModel = new HelperViewModel();
-
-      var helper = new HelperView(
-        currentSlide,
-        nextSlide, new PresentationTime(helperViewModel))
+      var helperViewModel = new HelperViewModel(path);
+      var helper = new HelperView(new PresentationTime(helperViewModel))
       {
-        DataContext = helperViewModel
+        DataContext = helperViewModel,
       };
 
-      mainSlideshow.ReportSlideChangesTo(All(currentSlide, nextSlide, helperViewModel));
+      var presentationViewModel = new PresentationViewModel(
+        path, 0, new BroadcastingSlideshowObserver(helperViewModel, helper));
 
-      mainSlideshow.Load();
-      currentSlide.Load();
-      nextSlide.Load();
-
-      var presentationView = new PresentationView(mainSlideshow);
-      presentationView.DataContext = new PresentationViewModel(mainSlideshow);
+      var presentationView = new PresentationView
+      {
+        DataContext = presentationViewModel
+      };
       presentationView.Show();
+
 
       helper.Owner = presentationView;
 
       helper.Show();
-
       presentationView.FocusOnPdf();
-    }
-
-    private static BroadcastingSlideshowObserver All(params PresentationProgressObserver[] observers)
-    {
-      return new BroadcastingSlideshowObserver(observers);
     }
   }
 }

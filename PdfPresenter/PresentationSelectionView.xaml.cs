@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using Microsoft.Win32;
 using Pri.LongPath;
@@ -16,6 +17,7 @@ namespace PdfPresenter
     {
       _runPresentation = runPresentation;
       InitializeComponent();
+      PresentationPath.Text = ConfigurationManager.AppSettings["path"];
     }
 
     public void PresentButton_OnClick(object sender, RoutedEventArgs e)

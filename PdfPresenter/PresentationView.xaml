@@ -1,4 +1,5 @@
 ﻿<Window x:Class="PdfPresenter.PresentationView"
+        x:Name="this"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,11 +9,9 @@
         xmlns:pdfFileViewControl="clr-namespace:PdfFileViewControl;assembly=PdfFileViewControl"
         mc:Ignorable="d"
         Title="PresentationView"
-        Background="Black"
         WindowState = "Maximized"
+        Background="Black"
         WindowStyle = "None"
-
-        Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignInstance viewModels:PresentationViewModel}">
 
   <Window.CommandBindings>
@@ -21,11 +20,11 @@
 
   <Window.InputBindings>
     <KeyBinding Key="OemPeriod" Command="{Binding ToggleVisibility}"></KeyBinding>
-    
+
     <KeyBinding Key="PageDown" Command="{Binding NextSlideCommand}"></KeyBinding>
     <KeyBinding Key="Down" Command="{Binding NextSlideCommand}"></KeyBinding>
     <KeyBinding Key="Space" Command="{Binding NextSlideCommand}"></KeyBinding>
-    
+
     <KeyBinding Key="PageUp" Command="{Binding PreviousSlideCommand}"></KeyBinding>
     <KeyBinding Key="Up" Command="{Binding PreviousSlideCommand}"></KeyBinding>
     <KeyBinding Key="Back" Command="{Binding PreviousSlideCommand}"></KeyBinding>
@@ -34,8 +33,12 @@
     <KeyBinding Key="F5" Command="ApplicationCommands.Close"></KeyBinding>
   </Window.InputBindings>
 
- 
   <Grid Name="MainGrid" Visibility="{Binding PresentationVisibility}">
+    <pdfFileViewControl:PdfFileView 
+      Name="FileView" 
+      File="{Binding File}" 
+      TotalPages="{Binding TotalSlides, Mode=OneWayToSource}"
+      Page="{Binding CurrentSlide}" />
   </Grid>
     
 </Window>

@@ -13,6 +13,14 @@ namespace PdfPresenter.ViewModels
   {
     private string _timeSinceStartString;
     private string _slideProgressText;
+    private int _currentSlide = 0;
+    private int _nextSlide = 1;
+
+    public HelperViewModel(string path)
+    {
+      File = path;
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     public string TimeSinceStartString
@@ -40,6 +48,29 @@ namespace PdfPresenter.ViewModels
       get { return "Move this window to second screen and maximize"; }
     }
 
+    public string File { get; }
+
+    public int CurrentSlide
+    {
+      get { return _currentSlide; }
+      set
+      {
+        _currentSlide = value;
+        OnPropertyChanged();
+        NextSlide = _currentSlide + 1;
+      }
+    }
+
+    public int NextSlide
+    {
+      get { return _nextSlide; }
+      set
+      {
+        _nextSlide = value;
+        OnPropertyChanged();
+      }
+    }
+
     public void NotifyOnTimePassed(TimeSpan time)
     {
       TimeSinceStartString = Formatting.OfPresentationDurationText(time);
@@ -47,6 +78,7 @@ namespace PdfPresenter.ViewModels
 
     public void NotifySlideChangedTo(int page, int totalPages)
     {
+      CurrentSlide = page;
       SlideProgressText = Formatting.OfSlideProgressionText(page, totalPages);
     }
 

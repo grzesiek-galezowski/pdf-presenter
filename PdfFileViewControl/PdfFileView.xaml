@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="PdfFileView_OnLoaded"
+             SizeChanged="PdfFileView_OnSizeChanged"
              >
+  
     <Grid Name="MainGrid">
 
     </Grid>

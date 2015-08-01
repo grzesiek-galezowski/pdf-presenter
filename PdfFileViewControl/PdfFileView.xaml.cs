@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using PdfiumViewer;
@@ -11,52 +10,56 @@ namespace PdfFileViewControl
   /// </summary>
   public partial class PdfFileView : UserControl
   {
-    private readonly int _slideOffset;
     private readonly PdfRenderer _pdfRenderer;
-    private WindowsFormsHost _windowsFormsHost;
-    private readonly string _path;
-    private int _totalPages = -1;
+    private readonly WindowsFormsHost _windowsFormsHost;
+    
+    public static readonly DependencyProperty FileProperty = PdfFileViewProperties.CreateFileProperty();
+    public static readonly DependencyProperty PageProperty = PdfFileViewProperties.CreatePageProperty(OnPageNumberChanged);
+    public static readonly DependencyProperty TotalPagesProperty = PdfFileViewProperties.CreateTotalPagesProperty();
 
 
-    private int _page = 0;
-
-    public int? Page
+    public string File
     {
-      get { return _page; }
-      set { _page = value ?? 0; }
+      get { return (string) GetValue(FileProperty); }
+      set { SetValue(FileProperty, value); }
     }
 
-    public string File { get; set; }
-
-
-    private static void OnInitialPageNumberChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    public int Page
     {
-      var pdf = (PdfFileView) d;
-      var value = (int?) e.NewValue;
-      pdf._page = value ?? 1;
+      get { return (int) GetValue(PageProperty); }
+      set { SetValue(PageProperty, value); }
+    }
+
+    public int? TotalPages
+    {
+      get { return (int?) GetValue(TotalPagesProperty); }
+      set { SetValue(TotalPagesProperty, value); }
     }
 
     public PdfFileView()
     {
       InitializeComponent();
-    }
-
-    private void PdfFileView_OnLoaded(object sender, RoutedEventArgs e)
-    {
-      var pdfDocument = PdfDocument.Load(File);
-      if (pdfDocument.PageCount == 0)
-      {
-        throw new PresentationLoadResultedInZeroPageDocumentException(_path);
-      }
-      _totalPages = pdfDocument.PageCount;
-      _pdfRenderer.Load(pdfDocument);
-
+      _pdfRenderer = new PdfRenderer();
       _windowsFormsHost = new WindowsFormsHost
       {
         Child = _pdfRenderer
       };
+      MainGrid.Children.Add(_windowsFormsHost);
+    }
 
-      AsSoonAsWinformsHostLoadsShowSlide(_slideOffset, _pdfRenderer);
+    private void PdfFileView_OnLoaded(object sender, RoutedEventArgs e)
+    {
+      
+      var pdfDocument = PdfDocument.Load(File);
+      if (pdfDocument.PageCount == 0)
+      {
+        throw new PresentationLoadResultedInZeroPageDocumentException(File);
+      }
+
+      TotalPages = pdfDocument.PageCount;
+      _pdfRenderer.Load(pdfDocument);
+
+      AsSoonAsWinformsHostLoadsShowSlide(Page, _pdfRenderer);
     }
 
     private void AsSoonAsWinformsHostLoadsShowSlide(int startingSlide, PdfRenderer pdfRenderer)
@@ -67,15 +70,24 @@ namespace PdfFileViewControl
         //_slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
       };
     }
-  }
 
-  //bug replace this with real exception
-  internal class PresentationLoadResultedInZeroPageDocumentException : Exception
-  {
-    public PresentationLoadResultedInZeroPageDocumentException(string path)
+    private static void OnPageNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
-      throw new NotImplementedException();
+      var view = (PdfFileView) dependencyObject;
+      view._pdfRenderer.Page = (int)dependencyPropertyChangedEventArgs.NewValue;
+    }
+
+    public void Refresh()
+    {
+      _pdfRenderer.Refresh();
+    }
+
+    private void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+      _pdfRenderer.Page = _pdfRenderer.Page;
     }
   }
+
+  //bug remove the original exception
 }
 
