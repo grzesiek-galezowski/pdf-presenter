@@ -77,10 +77,14 @@ namespace PdfFileViewControl
     {
       var view = (PdfFileView) dependencyObject;
       var pageIndex = (int)dependencyPropertyChangedEventArgs.NewValue;
-      view._pdfRenderer.Page = pageIndex;
-      view._cachedPageForErrorWorkaround = pageIndex;
+      view.SavePageIndex(pageIndex);
+      view.HideIfCurrentSlideIsBeyondPageRange();
+    }
 
-      view.HideIfAfterLastSlide(pageIndex);
+    public void SavePageIndex(int pageIndex)
+    {
+      _pdfRenderer.Page = pageIndex;
+      _cachedPageForErrorWorkaround = pageIndex;
     }
 
     /// <summary>
@@ -88,10 +92,14 @@ namespace PdfFileViewControl
     /// For such slideshows, going one index beyond page range is allowed.
     /// If this happens, we want to hide such slideshow.
     /// </summary>
-    /// <param name="pageIndex"></param>
-    private void HideIfAfterLastSlide(int pageIndex)
+    private void HideIfCurrentSlideIsBeyondPageRange()
     {
-      Visibility = pageIndex >= TotalPages ? Visibility.Hidden : Visibility.Visible;
+      Visibility = IsBeyondDocumentPageRange(_cachedPageForErrorWorkaround) ? Visibility.Hidden : Visibility.Visible;
+    }
+
+    private bool IsBeyondDocumentPageRange(int pageIndex)
+    {
+      return pageIndex >= TotalPages;
     }
 
     private void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)
