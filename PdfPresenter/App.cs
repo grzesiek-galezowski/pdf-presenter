@@ -32,20 +32,17 @@ namespace PdfPresenter
     private static void RunPresentation(string path)
     {
       var helperViewModel = new HelperViewModel(path);
+      var presentationViewModel = new PresentationViewModel(path, 0, helperViewModel);
+
       var helper = new HelperView(new PresentationTime(helperViewModel))
       {
         DataContext = helperViewModel,
       };
-
-      var presentationViewModel = new PresentationViewModel(
-        path, 0, new BroadcastingSlideshowObserver(helperViewModel, helper));
-
       var presentationView = new PresentationView
       {
         DataContext = presentationViewModel
       };
       presentationView.Show();
-
 
       helper.Owner = presentationView;
 

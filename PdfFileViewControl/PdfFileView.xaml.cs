@@ -16,6 +16,7 @@ namespace PdfFileViewControl
     public static readonly DependencyProperty FileProperty = PdfFileViewProperties.CreateFileProperty();
     public static readonly DependencyProperty PageProperty = PdfFileViewProperties.CreatePageProperty(OnPageNumberChanged);
     public static readonly DependencyProperty TotalPagesProperty = PdfFileViewProperties.CreateTotalPagesProperty();
+    private int _cachedPageForErrorWorkaround;
 
 
     public string File
@@ -74,17 +75,21 @@ namespace PdfFileViewControl
     private static void OnPageNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
       var view = (PdfFileView) dependencyObject;
-      view._pdfRenderer.Page = (int)dependencyPropertyChangedEventArgs.NewValue;
-    }
-
-    public void Refresh()
-    {
-      _pdfRenderer.Refresh();
+      var newValue = (int)dependencyPropertyChangedEventArgs.NewValue;
+      view._pdfRenderer.Page = newValue;
+      view._cachedPageForErrorWorkaround = newValue;
     }
 
     private void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
-      _pdfRenderer.Page = _pdfRenderer.Page;
+      CenterOnCurrentPage();
+    }
+
+    private void CenterOnCurrentPage()
+    {
+      //previously, I though I could write _pdfRenderer.Page = _pdfRenderer.Page;
+      //but resizing from min to max caused the _pdfRenderer.Page to magically flip to next/prev
+      _pdfRenderer.Page = _cachedPageForErrorWorkaround;
     }
   }
 
