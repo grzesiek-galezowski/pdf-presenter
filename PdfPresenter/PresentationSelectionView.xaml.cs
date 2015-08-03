@@ -11,7 +11,7 @@ namespace PdfPresenter
   /// </summary>
   public partial class PresentationSelectionView : Window
   {
-    private readonly Action<string> _runPresentation;
+    readonly Action<string> _runPresentation;
 
     public PresentationSelectionView(Action<string> runPresentation)
     {
@@ -20,12 +20,12 @@ namespace PdfPresenter
       PresentationPath.Text = ConfigurationManager.AppSettings["path"];
     }
 
-    public void PresentButton_OnClick(object sender, RoutedEventArgs e)
+    void PresentButton_OnClick(object sender, RoutedEventArgs e)
     {
       try
       {
         var text = PresentationPath.Text;
-        //bug check whether path exists
+
         if (new FileInfo(text).Exists)
         {
           _runPresentation(text);
@@ -41,12 +41,12 @@ namespace PdfPresenter
       }
     }
 
-    public void ExitButton_OnClick(object sender, RoutedEventArgs e)
+    void ExitButton_OnClick(object sender, RoutedEventArgs e)
     {
       Application.Current.Shutdown();
     }
 
-    public void BrowseButton_OnClick(object sender, RoutedEventArgs e)
+    void BrowseButton_OnClick(object sender, RoutedEventArgs e)
     {
       var fileDialog = new OpenFileDialog();
       fileDialog.Title = "Please select pdf file to present";

@@ -1,23 +1,19 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
-using System.Windows.Media;
 using PdfiumViewer;
 
 namespace PdfFileViewControl
 {
-  /// <summary>
-  /// Interaction logic for UserControl1.xaml
-  /// </summary>
   public partial class PdfFileView : UserControl
   {
-    private readonly PdfRenderer _pdfRenderer;
-    private readonly WindowsFormsHost _windowsFormsHost;
-    
-    public static readonly DependencyProperty FileProperty = PdfFileViewProperties.CreateFileProperty();
-    public static readonly DependencyProperty PageProperty = PdfFileViewProperties.CreatePageProperty(OnPageNumberChanged);
-    public static readonly DependencyProperty TotalPagesProperty = PdfFileViewProperties.CreateTotalPagesProperty();
-    private int _cachedPageForErrorWorkaround;
+    public static readonly DependencyProperty FileProperty = PdfFileViewProperties.CreateFileProperty<string>();
+    public static readonly DependencyProperty PageProperty = PdfFileViewProperties.CreatePageProperty<int>(OnPageNumberChanged);
+    public static readonly DependencyProperty TotalPagesProperty = PdfFileViewProperties.CreateTotalPagesProperty<int>();
+
+    readonly PdfRenderer _pdfRenderer;
+    readonly WindowsFormsHost _windowsFormsHost;
+    int _cachedPageForErrorWorkaround;
 
 
     public string File
@@ -32,10 +28,14 @@ namespace PdfFileViewControl
       set { SetValue(PageProperty, value); }
     }
 
-    public int? TotalPages
+    public int TotalPages
     {
-      get { return (int?) GetValue(TotalPagesProperty); }
-      set { SetValue(TotalPagesProperty, value); }
+      get { return (int) GetValue(TotalPagesProperty); }
+      set
+      {
+        SetValue(TotalPagesProperty, value);
+        HideIfCurrentSlideIsBeyondPageRange();
+      }
     }
 
     public PdfFileView()
@@ -49,9 +49,9 @@ namespace PdfFileViewControl
       MainGrid.Children.Add(_windowsFormsHost);
     }
 
-    private void PdfFileView_OnLoaded(object sender, RoutedEventArgs e)
+    void PdfFileView_OnLoaded(object sender, RoutedEventArgs e)
     {
-      
+
       var pdfDocument = PdfDocument.Load(File);
       if (pdfDocument.PageCount == 0)
       {
@@ -64,24 +64,23 @@ namespace PdfFileViewControl
       AsSoonAsWinformsHostLoadsShowSlide(Page, _pdfRenderer);
     }
 
-    private void AsSoonAsWinformsHostLoadsShowSlide(int startingSlide, PdfRenderer pdfRenderer)
+    void AsSoonAsWinformsHostLoadsShowSlide(int startingSlide, PdfRenderer pdfRenderer)
     {
       _windowsFormsHost.Loaded += (sender, args) =>
       {
         pdfRenderer.Page = startingSlide;
-        //_slideshowObserver.NotifySlideChangedTo(CurrentPage, TotalPages);
       };
     }
 
-    private static void OnPageNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+    static void OnPageNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
-      var view = (PdfFileView) dependencyObject;
+      var view = (PdfFileView)dependencyObject;
       var pageIndex = (int)dependencyPropertyChangedEventArgs.NewValue;
       view.SavePageIndex(pageIndex);
       view.HideIfCurrentSlideIsBeyondPageRange();
     }
 
-    public void SavePageIndex(int pageIndex)
+    void SavePageIndex(int pageIndex)
     {
       _pdfRenderer.Page = pageIndex;
       _cachedPageForErrorWorkaround = pageIndex;
@@ -92,22 +91,29 @@ namespace PdfFileViewControl
     /// For such slideshows, going one index beyond page range is allowed.
     /// If this happens, we want to hide such slideshow.
     /// </summary>
-    private void HideIfCurrentSlideIsBeyondPageRange()
+    void HideIfCurrentSlideIsBeyondPageRange()
     {
-      Visibility = IsBeyondDocumentPageRange(_cachedPageForErrorWorkaround) ? Visibility.Hidden : Visibility.Visible;
+      if (IsBeyondDocumentPageRange(_cachedPageForErrorWorkaround))
+      {
+        Visibility = Visibility.Hidden;
+      }
+      else
+      {
+        Visibility = Visibility.Visible;
+      }
     }
 
-    private bool IsBeyondDocumentPageRange(int pageIndex)
+    bool IsBeyondDocumentPageRange(int pageIndex)
     {
       return pageIndex >= TotalPages;
     }
 
-    private void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    void PdfFileView_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
       CenterOnCurrentPage();
     }
 
-    private void CenterOnCurrentPage()
+    void CenterOnCurrentPage()
     {
       //previously, I though I could write _pdfRenderer.Page = _pdfRenderer.Page;
       //but resizing from min to max caused the _pdfRenderer.Page to magically flip to next/prev

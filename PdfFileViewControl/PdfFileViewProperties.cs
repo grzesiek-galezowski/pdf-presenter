@@ -1,21 +1,21 @@
 using System.Windows;
 using PdfFileViewControl;
 
-static internal class PdfFileViewProperties
+static class PdfFileViewProperties
 {
-  public static DependencyProperty CreateFileProperty()
+  public static DependencyProperty CreateFileProperty<T>()
   {
-    return DependencyProperty.Register("File", typeof(string), typeof(PdfFileView), new PropertyMetadata(default(string)));
+    return DependencyProperty.Register("File", typeof(T), typeof(PdfFileView), new PropertyMetadata(default(T)));
   }
 
-  public static DependencyProperty CreateTotalPagesProperty()
+  public static DependencyProperty CreateTotalPagesProperty<T>()
   {
-    return DependencyProperty.Register("TotalPages", typeof(int?), typeof(PdfFileView), new PropertyMetadata(default(int?)));
+    return DependencyProperty.Register("TotalPages", typeof(T), typeof(PdfFileView), new PropertyMetadata(default(T)));
   }
 
-  public static DependencyProperty CreatePageProperty(PropertyChangedCallback onPageNumberChanged)
+  public static DependencyProperty CreatePageProperty<T>(PropertyChangedCallback onPageNumberChanged)
   {
-    return DependencyProperty.Register("Page", typeof(int), typeof(PdfFileView), 
-      new PropertyMetadata(default(int), onPageNumberChanged));
+    return DependencyProperty.Register("Page", typeof(T), typeof(PdfFileView), 
+      new PropertyMetadata(default(T), onPageNumberChanged));
   }
 }
